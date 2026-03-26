@@ -1,4 +1,4 @@
-﻿import { Post, PostBox, TopBar } from "@/widgets/Feed";
+﻿import { Post, TopBar } from "@/widgets/Feed";
 import { News, Search, Suggestions, Trends } from "@/widgets/RightPanel";
 import Sidebar from "@/widgets/Sidebar/SideBar";
 import { IconSettings } from "@tabler/icons-react";
@@ -30,7 +30,6 @@ function Explore() {
               stretchTabs
             />
           </div>
-          <PostBox />
 
           {[...Array(15)].map((_, i) => (
             <Post key={i} />

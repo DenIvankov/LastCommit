@@ -15,5 +15,11 @@ export interface UserProfile {
   last_name?: string | null;
   /** @nullable */
   bio?: string | null;
+  /** @nullable */
+  location?: string | null;
+  /** @nullable */
+  avatar_url?: string | null;
+  /** @nullable */
+  background_url?: string | null;
   user: User;
 }

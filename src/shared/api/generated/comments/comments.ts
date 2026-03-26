@@ -5,6 +5,13 @@
  * API documentation for the Karate project
  * OpenAPI spec version: 1.0
  */
+import * as axios from 'axios';
+import type {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse
+} from 'axios';
+
 import type {
   Comment,
   CreateCommentDto,
@@ -12,152 +19,68 @@ import type {
 } from '../models';
 
 
+
+
+  export const getComments = (axiosInstance: AxiosInstance = axios.default) => {
 /**
  * @summary Create comment
  */
-export const getCommentsControllerCreateUrl = (postId: string,) => {
-
-
-
-
-  return `http://localhost:3000/comments/post/${postId}`
-}
-
-export const commentsControllerCreate = async (postId: string,
-    createCommentDto: CreateCommentDto, options?: RequestInit): Promise<Comment> => {
-
-  const res = await fetch(getCommentsControllerCreateUrl(postId),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      createCommentDto,)
+const commentsControllerCreate = (
+    postId: string,
+    createCommentDto: CreateCommentDto, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<Comment>> => {
+    return axiosInstance.post(
+      `http://localhost:3000/comments/post/${postId}`,
+      createCommentDto,options
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: Comment = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Get all comments
  */
-export const getCommentsControllerFindAllUrl = () => {
-
-
-
-
-  return `http://localhost:3000/comments`
-}
-
-export const commentsControllerFindAll = async ( options?: RequestInit): Promise<Comment[]> => {
-
-  const res = await fetch(getCommentsControllerFindAllUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
+const commentsControllerFindAll = (
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<Comment[]>> => {
+    return axiosInstance.get(
+      `http://localhost:3000/comments`,options
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: Comment[] = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Get comment by id
  */
-export const getCommentsControllerFindOneUrl = (id: string,) => {
-
-
-
-
-  return `http://localhost:3000/comments/${id}`
-}
-
-export const commentsControllerFindOne = async (id: string, options?: RequestInit): Promise<Comment> => {
-
-  const res = await fetch(getCommentsControllerFindOneUrl(id),
-  {
-    ...options,
-    method: 'GET'
-
-
+const commentsControllerFindOne = (
+    id: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<Comment>> => {
+    return axiosInstance.get(
+      `http://localhost:3000/comments/${id}`,options
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: Comment = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Update comment (owner or ADMIN)
  */
-export const getCommentsControllerUpdateUrl = (id: string,) => {
-
-
-
-
-  return `http://localhost:3000/comments/${id}`
-}
-
-export const commentsControllerUpdate = async (id: string,
-    updateCommentDto: UpdateCommentDto, options?: RequestInit): Promise<string> => {
-
-  const res = await fetch(getCommentsControllerUpdateUrl(id),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      updateCommentDto,)
+const commentsControllerUpdate = (
+    id: string,
+    updateCommentDto: UpdateCommentDto, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<string>> => {
+    return axiosInstance.patch(
+      `http://localhost:3000/comments/${id}`,
+      updateCommentDto,{
+    ...options,}
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: string = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Delete comment (owner or ADMIN)
  */
-export const getCommentsControllerRemoveUrl = (id: string,) => {
-
-
-
-
-  return `http://localhost:3000/comments/${id}`
-}
-
-export const commentsControllerRemove = async (id: string, options?: RequestInit): Promise<string> => {
-
-  const res = await fetch(getCommentsControllerRemoveUrl(id),
-  {
-    ...options,
-    method: 'DELETE'
-
-
+const commentsControllerRemove = (
+    id: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<string>> => {
+    return axiosInstance.delete(
+      `http://localhost:3000/comments/${id}`,{
+    ...options,}
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: string = body ? JSON.parse(body) : {}
-  return data
-}
-
-
+return {commentsControllerCreate,commentsControllerFindAll,commentsControllerFindOne,commentsControllerUpdate,commentsControllerRemove}};
+export type CommentsControllerCreateResult = AxiosResponse<Comment>
+export type CommentsControllerFindAllResult = AxiosResponse<Comment[]>
+export type CommentsControllerFindOneResult = AxiosResponse<Comment>
+export type CommentsControllerUpdateResult = AxiosResponse<string>
+export type CommentsControllerRemoveResult = AxiosResponse<string>

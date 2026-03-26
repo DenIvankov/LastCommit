@@ -5,6 +5,13 @@
  * API documentation for the Karate project
  * OpenAPI spec version: 1.0
  */
+import * as axios from 'axios';
+import type {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse
+} from 'axios';
+
 import type {
   AuthControllerLogin201,
   AuthControllerLogout201,
@@ -17,151 +24,65 @@ import type {
 } from '../models';
 
 
+
+
+  export const getAuth = (axiosInstance: AxiosInstance = axios.default) => {
 /**
  * @summary Login user
  */
-export const getAuthControllerLoginUrl = () => {
-
-
-
-
-  return `http://localhost:3000/auth/login`
-}
-
-export const authControllerLogin = async (loginUserDto: LoginUserDto, options?: RequestInit): Promise<AuthControllerLogin201> => {
-
-  const res = await fetch(getAuthControllerLoginUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      loginUserDto,)
+const authControllerLogin = (
+    loginUserDto: LoginUserDto, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<AuthControllerLogin201>> => {
+    return axiosInstance.post(
+      `http://localhost:3000/auth/login`,
+      loginUserDto,options
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: AuthControllerLogin201 = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Register user (role USER)
  */
-export const getAuthControllerRegisterUrl = () => {
-
-
-
-
-  return `http://localhost:3000/auth/register`
-}
-
-export const authControllerRegister = async (registerUserDto: RegisterUserDto, options?: RequestInit): Promise<AuthControllerRegister201> => {
-
-  const res = await fetch(getAuthControllerRegisterUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      registerUserDto,)
+const authControllerRegister = (
+    registerUserDto: RegisterUserDto, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<AuthControllerRegister201>> => {
+    return axiosInstance.post(
+      `http://localhost:3000/auth/register`,
+      registerUserDto,options
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: AuthControllerRegister201 = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Register admin (only ADMIN)
  */
-export const getAuthControllerRegisterAdminUrl = () => {
-
-
-
-
-  return `http://localhost:3000/auth/register/admin`
-}
-
-export const authControllerRegisterAdmin = async (registerAdminDto: RegisterAdminDto, options?: RequestInit): Promise<AuthControllerRegisterAdmin201> => {
-
-  const res = await fetch(getAuthControllerRegisterAdminUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      registerAdminDto,)
+const authControllerRegisterAdmin = (
+    registerAdminDto: RegisterAdminDto, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<AuthControllerRegisterAdmin201>> => {
+    return axiosInstance.post(
+      `http://localhost:3000/auth/register/admin`,
+      registerAdminDto,options
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: AuthControllerRegisterAdmin201 = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Refresh token pair
  */
-export const getAuthControllerRefreshUrl = () => {
-
-
-
-
-  return `http://localhost:3000/auth/refresh`
-}
-
-export const authControllerRefresh = async ( options?: RequestInit): Promise<AuthControllerRefresh201> => {
-
-  const res = await fetch(getAuthControllerRefreshUrl(),
-  {
-    ...options,
-    method: 'POST'
-
-
+const authControllerRefresh = (
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<AuthControllerRefresh201>> => {
+    return axiosInstance.post(
+      `http://localhost:3000/auth/refresh`,undefined,options
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: AuthControllerRefresh201 = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Logout user
  */
-export const getAuthControllerLogoutUrl = () => {
-
-
-
-
-  return `http://localhost:3000/auth/logout`
-}
-
-export const authControllerLogout = async ( options?: RequestInit): Promise<AuthControllerLogout201> => {
-
-  const res = await fetch(getAuthControllerLogoutUrl(),
-  {
-    ...options,
-    method: 'POST'
-
-
+const authControllerLogout = (
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<AuthControllerLogout201>> => {
+    return axiosInstance.post(
+      `http://localhost:3000/auth/logout`,undefined,options
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: AuthControllerLogout201 = body ? JSON.parse(body) : {}
-  return data
-}
-
-
+return {authControllerLogin,authControllerRegister,authControllerRegisterAdmin,authControllerRefresh,authControllerLogout}};
+export type AuthControllerLoginResult = AxiosResponse<AuthControllerLogin201>
+export type AuthControllerRegisterResult = AxiosResponse<AuthControllerRegister201>
+export type AuthControllerRegisterAdminResult = AxiosResponse<AuthControllerRegisterAdmin201>
+export type AuthControllerRefreshResult = AxiosResponse<AuthControllerRefresh201>
+export type AuthControllerLogoutResult = AxiosResponse<AuthControllerLogout201>

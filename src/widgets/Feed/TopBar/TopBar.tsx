@@ -27,7 +27,7 @@ export function TopBar({
         ${direction === "down" ? "-translate-y-full sm:translate-y-0" : "translate-y-0"}
       `}
     >
-      <div className="flex w-full">
+      <div className="flex w-full overflow-x-auto flex-nowrap scrollbar-hide">
         {tabs.map((label, index) => (
           <Tab
             key={label}

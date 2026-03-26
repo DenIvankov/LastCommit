@@ -1,4 +1,5 @@
-import { IconPolaroid, IconMoodSmile, IconGif, IconUser } from "@tabler/icons-react";
+import { Link } from "react-router";
+import { IconPolaroid, IconMoodSmile, IconGif } from "@tabler/icons-react";
 import { useState } from "react";
 
 export function PostBox() {
@@ -7,9 +8,15 @@ export function PostBox() {
 
   return (
     <div className="flex gap-3 p-4 border-b x-divider">
-      <div className="avatar rounded-full flex items-center justify-center">
-        <IconUser size={32} stroke={1} />
-      </div>
+      <Link to="/Profile" className="flex-shrink-0">
+        <div
+          className="h-10 w-10 rounded-full bg-cover bg-center border border-gray-400  bg-neutral-300 hover:bg-neutral-700"
+          style={{
+            backgroundImage:
+              "url('https://png.pngtree.com/png-clipart/20241018/original/pngtree-cartoon-skull-grinning-with-big-eyes-3d-illustration-clipart-png-image_16374217.png')",
+          }}
+        />
+      </Link>
       <div className="flex-1">
         <textarea
           className="w-full min-h-10 bg-transparent outline-none resize-none text-lg leading-6 pt-2 placeholder:text-xl"

@@ -9,13 +9,13 @@ export default defineConfig({
       mode: "tags-split",
       target: "src/shared/api/generated/endpoints.ts",
       schemas: "src/shared/api/generated/models",
-      client: "fetch",
+      client: "axios",
       baseUrl: "http://localhost:3000",
       clean: true,
       prettier: false,
       override: {
-        fetch: {
-          includeHttpResponseReturnType: false,
+        axios: {
+          importAxiosFrom: "@/shared/api/axios",
         },
       },
     },

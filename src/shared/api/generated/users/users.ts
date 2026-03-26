@@ -5,6 +5,13 @@
  * API documentation for the Karate project
  * OpenAPI spec version: 1.0
  */
+import * as axios from 'axios';
+import type {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse
+} from 'axios';
+
 import type {
   UpdateUserDto,
   User,
@@ -16,297 +23,124 @@ import type {
 } from '../models';
 
 
+
+
+  export const getUsers = (axiosInstance: AxiosInstance = axios.default) => {
 /**
  * @summary Add post to favorites
  */
-export const getUsersControllerAddFavoritePostUrl = (postId: number,) => {
-
-
-
-
-  return `http://localhost:3000/users/favorite/${postId}`
-}
-
-export const usersControllerAddFavoritePost = async (postId: number, options?: RequestInit): Promise<string> => {
-
-  const res = await fetch(getUsersControllerAddFavoritePostUrl(postId),
-  {
-    ...options,
-    method: 'POST'
-
-
+const usersControllerAddFavoritePost = (
+    postId: number, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<string>> => {
+    return axiosInstance.post(
+      `http://localhost:3000/users/favorite/${postId}`,undefined,{
+    ...options,}
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: string = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Remove post from favorites
  */
-export const getUsersControllerRemoveFavoritePostUrl = (postId: number,) => {
-
-
-
-
-  return `http://localhost:3000/users/favorite/${postId}`
-}
-
-export const usersControllerRemoveFavoritePost = async (postId: number, options?: RequestInit): Promise<string> => {
-
-  const res = await fetch(getUsersControllerRemoveFavoritePostUrl(postId),
-  {
-    ...options,
-    method: 'DELETE'
-
-
+const usersControllerRemoveFavoritePost = (
+    postId: number, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<string>> => {
+    return axiosInstance.delete(
+      `http://localhost:3000/users/favorite/${postId}`,{
+    ...options,}
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: string = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Get all users
  */
-export const getUsersControllerAllUsersUrl = () => {
-
-
-
-
-  return `http://localhost:3000/users`
-}
-
-export const usersControllerAllUsers = async ( options?: RequestInit): Promise<User[]> => {
-
-  const res = await fetch(getUsersControllerAllUsersUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
+const usersControllerAllUsers = (
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<User[]>> => {
+    return axiosInstance.get(
+      `http://localhost:3000/users`,options
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: User[] = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Delete all users
  */
-export const getUsersControllerDeleteAllUrl = () => {
-
-
-
-
-  return `http://localhost:3000/users`
-}
-
-export const usersControllerDeleteAll = async ( options?: RequestInit): Promise<UsersControllerDeleteAll200> => {
-
-  const res = await fetch(getUsersControllerDeleteAllUrl(),
-  {
-    ...options,
-    method: 'DELETE'
-
-
+const usersControllerDeleteAll = (
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<UsersControllerDeleteAll200>> => {
+    return axiosInstance.delete(
+      `http://localhost:3000/users`,options
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: UsersControllerDeleteAll200 = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Get user by id
  */
-export const getUsersControllerFindOneUrl = (id: string,) => {
-
-
-
-
-  return `http://localhost:3000/users/id/${id}`
-}
-
-export const usersControllerFindOne = async (id: string, options?: RequestInit): Promise<User> => {
-
-  const res = await fetch(getUsersControllerFindOneUrl(id),
-  {
-    ...options,
-    method: 'GET'
-
-
+const usersControllerFindOne = (
+    id: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<User>> => {
+    return axiosInstance.get(
+      `http://localhost:3000/users/id/${id}`,options
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: User = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Delete user by id
  */
-export const getUsersControllerRemoveIdUrl = (id: string,) => {
-
-
-
-
-  return `http://localhost:3000/users/id/${id}`
-}
-
-export const usersControllerRemoveId = async (id: string, options?: RequestInit): Promise<UsersControllerRemoveId200> => {
-
-  const res = await fetch(getUsersControllerRemoveIdUrl(id),
-  {
-    ...options,
-    method: 'DELETE'
-
-
+const usersControllerRemoveId = (
+    id: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<UsersControllerRemoveId200>> => {
+    return axiosInstance.delete(
+      `http://localhost:3000/users/id/${id}`,options
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: UsersControllerRemoveId200 = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Get current user favorites
  */
-export const getUsersControllerGetAllFavoritesPostsUrl = () => {
-
-
-
-
-  return `http://localhost:3000/users/favorites`
-}
-
-export const usersControllerGetAllFavoritesPosts = async ( options?: RequestInit): Promise<UsersControllerGetAllFavoritesPosts200Item[]> => {
-
-  const res = await fetch(getUsersControllerGetAllFavoritesPostsUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
+const usersControllerGetAllFavoritesPosts = (
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<UsersControllerGetAllFavoritesPosts200Item[]>> => {
+    return axiosInstance.get(
+      `http://localhost:3000/users/favorites`,options
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: UsersControllerGetAllFavoritesPosts200Item[] = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Get user by name
  */
-export const getUsersControllerFindOneByNameUrl = (name: string,) => {
-
-
-
-
-  return `http://localhost:3000/users/name/${name}`
-}
-
-export const usersControllerFindOneByName = async (name: string, options?: RequestInit): Promise<User> => {
-
-  const res = await fetch(getUsersControllerFindOneByNameUrl(name),
-  {
-    ...options,
-    method: 'GET'
-
-
+const usersControllerFindOneByName = (
+    name: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<User>> => {
+    return axiosInstance.get(
+      `http://localhost:3000/users/name/${name}`,options
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: User = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Update user
  */
-export const getUsersControllerUpdateUrl = (id: string,) => {
-
-
-
-
-  return `http://localhost:3000/users/${id}`
-}
-
-export const usersControllerUpdate = async (id: string,
-    updateUserDto: UpdateUserDto, options?: RequestInit): Promise<string> => {
-
-  const res = await fetch(getUsersControllerUpdateUrl(id),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      updateUserDto,)
+const usersControllerUpdate = (
+    id: string,
+    updateUserDto: UpdateUserDto, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<string>> => {
+    return axiosInstance.patch(
+      `http://localhost:3000/users/${id}`,
+      updateUserDto,{
+    ...options,}
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: string = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Update user role (ADMIN only)
  */
-export const getUsersControllerUpdateRoleUrl = (id: string,) => {
-
-
-
-
-  return `http://localhost:3000/users/${id}/role`
-}
-
-export const usersControllerUpdateRole = async (id: string,
-    usersControllerUpdateRoleBody: UsersControllerUpdateRoleBody, options?: RequestInit): Promise<UsersControllerUpdateRole200> => {
-
-  const res = await fetch(getUsersControllerUpdateRoleUrl(id),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      usersControllerUpdateRoleBody,)
+const usersControllerUpdateRole = (
+    id: string,
+    usersControllerUpdateRoleBody: UsersControllerUpdateRoleBody, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<UsersControllerUpdateRole200>> => {
+    return axiosInstance.patch(
+      `http://localhost:3000/users/${id}/role`,
+      usersControllerUpdateRoleBody,options
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: UsersControllerUpdateRole200 = body ? JSON.parse(body) : {}
-  return data
-}
-
-
+return {usersControllerAddFavoritePost,usersControllerRemoveFavoritePost,usersControllerAllUsers,usersControllerDeleteAll,usersControllerFindOne,usersControllerRemoveId,usersControllerGetAllFavoritesPosts,usersControllerFindOneByName,usersControllerUpdate,usersControllerUpdateRole}};
+export type UsersControllerAddFavoritePostResult = AxiosResponse<string>
+export type UsersControllerRemoveFavoritePostResult = AxiosResponse<string>
+export type UsersControllerAllUsersResult = AxiosResponse<User[]>
+export type UsersControllerDeleteAllResult = AxiosResponse<UsersControllerDeleteAll200>
+export type UsersControllerFindOneResult = AxiosResponse<User>
+export type UsersControllerRemoveIdResult = AxiosResponse<UsersControllerRemoveId200>
+export type UsersControllerGetAllFavoritesPostsResult = AxiosResponse<UsersControllerGetAllFavoritesPosts200Item[]>
+export type UsersControllerFindOneByNameResult = AxiosResponse<User>
+export type UsersControllerUpdateResult = AxiosResponse<string>
+export type UsersControllerUpdateRoleResult = AxiosResponse<UsersControllerUpdateRole200>

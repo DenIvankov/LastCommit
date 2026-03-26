@@ -1,23 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IconBrandApple, IconBrandGoogle, IconBrandX } from "@tabler/icons-react";
+import {
+  IconBrandApple,
+  IconBrandGoogle,
+  IconBrandX,
+} from "@tabler/icons-react";
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 
-import { useAuth } from "@/shared/auth";
-
-const registerSchema = z.object({
-  name: z.string().min(2, "Name must contain at least 2 characters"),
-  email: z.email("Enter a valid email"),
-  password: z.string().min(6, "Password must contain at least 6 characters"),
-});
-
-type RegisterFormValues = z.infer<typeof registerSchema>;
+import { authStore } from "@/shared/auth/authStore";
+import { registerSchema, type RegisterFormValues } from "@/shared/schemas";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
-  const { register: registerUser, isAuthenticated, isHydrating } = useAuth();
+  const { register: registerUser, isLoading } = authStore();
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const {
@@ -33,17 +29,17 @@ export default function RegisterPage() {
     },
   });
 
-  if (!isHydrating && isAuthenticated) {
-    return <Navigate to="/Home" replace />;
-  }
-
   const onSubmit = async (values: RegisterFormValues) => {
     try {
       setSubmitError(null);
       await registerUser(values);
       navigate("/Home", { replace: true });
-    } catch {
-      setSubmitError("Registration failed. Please try another email.");
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Registration failed. Please try another email.";
+      setSubmitError(errorMessage);
     }
   };
 
@@ -62,7 +58,9 @@ export default function RegisterPage() {
           <h1 className="text-[56px] leading-[1.05] font-extrabold tracking-tight">
             Join X today
           </h1>
-          <p className="mt-2 text-[32px] leading-tight font-bold">Create your account</p>
+          <p className="mt-2 text-[32px] leading-tight font-bold">
+            Create your account
+          </p>
 
           <div className="mt-8 space-y-3">
             <button
@@ -83,11 +81,17 @@ export default function RegisterPage() {
 
           <div className="my-5 flex items-center gap-4">
             <div className="h-px flex-1 bg-neutral-200 dark:bg-neutral-700" />
-            <span className="text-sm text-neutral-500 dark:text-neutral-400">or</span>
+            <span className="text-sm text-neutral-500 dark:text-neutral-400">
+              or
+            </span>
             <div className="h-px flex-1 bg-neutral-200 dark:bg-neutral-700" />
           </div>
 
-          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)} noValidate>
+          <form
+            className="space-y-4"
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+          >
             <div>
               <input
                 type="text"
@@ -97,7 +101,9 @@ export default function RegisterPage() {
                 className="w-full h-14 rounded-md border border-neutral-300 dark:border-neutral-700 bg-transparent px-3 text-[17px] outline-none focus:border-sky-500"
               />
               {errors.name && (
-                <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.name.message}
+                </p>
               )}
             </div>
 
@@ -110,7 +116,9 @@ export default function RegisterPage() {
                 className="w-full h-14 rounded-md border border-neutral-300 dark:border-neutral-700 bg-transparent px-3 text-[17px] outline-none focus:border-sky-500"
               />
               {errors.email && (
-                <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -123,18 +131,24 @@ export default function RegisterPage() {
                 className="w-full h-14 rounded-md border border-neutral-300 dark:border-neutral-700 bg-transparent px-3 text-[17px] outline-none focus:border-sky-500"
               />
               {errors.password && (
-                <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
-            {submitError && <p className="text-sm text-red-500">{submitError}</p>}
+            {submitError && (
+              <p className="text-sm text-red-500">{submitError}</p>
+            )}
 
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || isLoading}
               className="w-full h-11 rounded-full bg-black text-white dark:bg-white dark:text-black text-[15px] font-bold disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "Creating account..." : "Create account"}
+              {isSubmitting || isLoading
+                ? "Creating account..."
+                : "Create account"}
             </button>
           </form>
 
@@ -149,4 +163,3 @@ export default function RegisterPage() {
     </div>
   );
 }
-

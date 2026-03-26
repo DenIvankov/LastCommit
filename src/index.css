@@ -165,6 +165,16 @@ picture {
          hover:bg-sky-50
          dark:hover:bg-sky-900;
   }
+
+  /* Scrollbar hide utility */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
 .x-button-post {
   @apply mt-4 bg-black text-white rounded-full

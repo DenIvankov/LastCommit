@@ -5,6 +5,13 @@
  * API documentation for the Karate project
  * OpenAPI spec version: 1.0
  */
+import * as axios from 'axios';
+import type {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse
+} from 'axios';
+
 import type {
   CreatePostDto,
   Posts,
@@ -14,158 +21,69 @@ import type {
 } from '../models';
 
 
+
+
+  export const getPosts = (axiosInstance: AxiosInstance = axios.default) => {
 /**
  * @summary Create post
  */
-export const getPostsControllerCreateUrl = () => {
-
-
-
-
-  return `http://localhost:3000/posts`
-}
-
-export const postsControllerCreate = async (createPostDto: CreatePostDto, options?: RequestInit): Promise<Posts> => {
-
-  const res = await fetch(getPostsControllerCreateUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      createPostDto,)
+const postsControllerCreate = (
+    createPostDto: CreatePostDto, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<Posts>> => {
+    return axiosInstance.post(
+      `http://localhost:3000/posts`,
+      createPostDto,options
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: Posts = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Get posts
  */
-export const getPostsControllerGetPostsUrl = (params?: PostsControllerGetPostsParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `http://localhost:3000/posts?${stringifiedParams}` : `http://localhost:3000/posts`
-}
-
-export const postsControllerGetPosts = async (params?: PostsControllerGetPostsParams, options?: RequestInit): Promise<PostsControllerGetPosts200> => {
-
-  const res = await fetch(getPostsControllerGetPostsUrl(params),
-  {
+const postsControllerGetPosts = (
+    params?: PostsControllerGetPostsParams, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<PostsControllerGetPosts200>> => {
+    return axiosInstance.get(
+      `http://localhost:3000/posts`,{
     ...options,
-    method: 'GET'
-
-
+        params: {...params, ...options?.params},}
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: PostsControllerGetPosts200 = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Get post by id
  */
-export const getPostsControllerFindOneUrl = (id: string,) => {
-
-
-
-
-  return `http://localhost:3000/posts/${id}`
-}
-
-export const postsControllerFindOne = async (id: string, options?: RequestInit): Promise<Posts> => {
-
-  const res = await fetch(getPostsControllerFindOneUrl(id),
-  {
-    ...options,
-    method: 'GET'
-
-
+const postsControllerFindOne = (
+    id: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<Posts>> => {
+    return axiosInstance.get(
+      `http://localhost:3000/posts/${id}`,options
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: Posts = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Update post
  */
-export const getPostsControllerUpdateUrl = (id: string,) => {
-
-
-
-
-  return `http://localhost:3000/posts/${id}`
-}
-
-export const postsControllerUpdate = async (id: string,
-    updatePostDto: UpdatePostDto, options?: RequestInit): Promise<string> => {
-
-  const res = await fetch(getPostsControllerUpdateUrl(id),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      updatePostDto,)
+const postsControllerUpdate = (
+    id: string,
+    updatePostDto: UpdatePostDto, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<string>> => {
+    return axiosInstance.patch(
+      `http://localhost:3000/posts/${id}`,
+      updatePostDto,{
+    ...options,}
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: string = body ? JSON.parse(body) : {}
-  return data
-}
-
-
 /**
  * @summary Delete post
  */
-export const getPostsControllerRemoveUrl = (id: string,) => {
-
-
-
-
-  return `http://localhost:3000/posts/${id}`
-}
-
-export const postsControllerRemove = async (id: string, options?: RequestInit): Promise<string> => {
-
-  const res = await fetch(getPostsControllerRemoveUrl(id),
-  {
-    ...options,
-    method: 'DELETE'
-
-
+const postsControllerRemove = (
+    id: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<string>> => {
+    return axiosInstance.delete(
+      `http://localhost:3000/posts/${id}`,{
+    ...options,}
+    );
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: string = body ? JSON.parse(body) : {}
-  return data
-}
-
-
+return {postsControllerCreate,postsControllerGetPosts,postsControllerFindOne,postsControllerUpdate,postsControllerRemove}};
+export type PostsControllerCreateResult = AxiosResponse<Posts>
+export type PostsControllerGetPostsResult = AxiosResponse<PostsControllerGetPosts200>
+export type PostsControllerFindOneResult = AxiosResponse<Posts>
+export type PostsControllerUpdateResult = AxiosResponse<string>
+export type PostsControllerRemoveResult = AxiosResponse<string>

@@ -6,6 +6,7 @@ import {
   IconBrandX,
   IconHome,
   IconHomeFilled,
+  IconLogout,
   IconMail,
   IconMailFilled,
   IconSearch,
@@ -16,6 +17,7 @@ import {
 import { cloneElement, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 
+import { authStore } from "@/shared/auth/authStore";
 import { ThemeToggle } from "../../shared/theme/ThemeToggle";
 
 type SidebarProps = Record<string, never>;
@@ -23,6 +25,7 @@ type SidebarProps = Record<string, never>;
 export default function Sidebar({}: SidebarProps) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout } = authStore();
   const iconSize = 28;
   const [isMobileBarTransparent, setIsMobileBarTransparent] = useState(false);
 
@@ -151,6 +154,18 @@ export default function Sidebar({}: SidebarProps) {
           <span className="xl:hidden">+</span>
         </button>
         <ThemeToggle />
+
+        <button
+          onClick={logout}
+          className="mt-2 flex items-center gap-4 x-hover-row rounded-full px-3 py-3 cursor-pointer"
+        >
+          <span>
+            <IconLogout size={iconSize} stroke={1.5} />
+          </span>
+          <span className="hidden xl:inline text-xl leading-6 font-normal">
+            Logout
+          </span>
+        </button>
       </div>
 
       <nav

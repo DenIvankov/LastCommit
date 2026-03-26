@@ -1,23 +1,20 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IconBrandApple, IconBrandGoogle, IconBrandX } from "@tabler/icons-react";
+import {
+  IconBrandApple,
+  IconBrandGoogle,
+  IconBrandX,
+} from "@tabler/icons-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, Navigate, useLocation, useNavigate } from "react-router";
-import { z } from "zod";
+import { Link, useLocation, useNavigate } from "react-router";
 
-import { useAuth } from "@/shared/auth";
-
-const loginSchema = z.object({
-  email: z.email("Enter a valid email"),
-  password: z.string().min(6, "Password must contain at least 6 characters"),
-});
-
-type LoginFormValues = z.infer<typeof loginSchema>;
+import { authStore } from "@/shared/auth/authStore";
+import { loginSchema, type LoginFormValues } from "@/shared/schemas";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, isAuthenticated, isHydrating } = useAuth();
+  const { login, isLoading, error } = authStore();
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const {
@@ -31,10 +28,6 @@ export default function LoginPage() {
       password: "",
     },
   });
-
-  if (!isHydrating && isAuthenticated) {
-    return <Navigate to="/Home" replace />;
-  }
 
   const onSubmit = async (values: LoginFormValues) => {
     try {
@@ -54,7 +47,7 @@ export default function LoginPage() {
 
       navigate(fromPath, { replace: true });
     } catch {
-      setSubmitError("Login failed. Please check email and password.");
+      setSubmitError(error ?? "Login failed. Please check email and password.");
     }
   };
 
@@ -73,7 +66,9 @@ export default function LoginPage() {
           <h1 className="text-[56px] leading-[1.05] font-extrabold tracking-tight">
             Happening now
           </h1>
-          <p className="mt-2 text-[32px] leading-tight font-bold">Sign in to X</p>
+          <p className="mt-2 text-[32px] leading-tight font-bold">
+            Sign in to X
+          </p>
 
           <div className="mt-8 space-y-3">
             <button
@@ -94,11 +89,17 @@ export default function LoginPage() {
 
           <div className="my-5 flex items-center gap-4">
             <div className="h-px flex-1 bg-neutral-200 dark:bg-neutral-700" />
-            <span className="text-sm text-neutral-500 dark:text-neutral-400">or</span>
+            <span className="text-sm text-neutral-500 dark:text-neutral-400">
+              or
+            </span>
             <div className="h-px flex-1 bg-neutral-200 dark:bg-neutral-700" />
           </div>
 
-          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)} noValidate>
+          <form
+            className="space-y-4"
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+          >
             <div>
               <input
                 type="email"
@@ -108,7 +109,9 @@ export default function LoginPage() {
                 className="w-full h-14 rounded-md border border-neutral-300 dark:border-neutral-700 bg-transparent px-3 text-[17px] outline-none focus:border-sky-500"
               />
               {errors.email && (
-                <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -121,18 +124,35 @@ export default function LoginPage() {
                 className="w-full h-14 rounded-md border border-neutral-300 dark:border-neutral-700 bg-transparent px-3 text-[17px] outline-none focus:border-sky-500"
               />
               {errors.password && (
-                <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
-            {submitError && <p className="text-sm text-red-500">{submitError}</p>}
+            {(submitError || error) && (
+              <p className="text-sm text-red-500 break-all">
+                Error: {submitError || error}
+              </p>
+            )}
+
+            {/* Debug info */}
+            <div className="text-xs text-gray-500">
+              <p>
+                API:{" "}
+                {import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3000"}
+              </p>
+              <p>
+                Error type: {error?.includes("Network") ? "Network" : "Other"}
+              </p>
+            </div>
 
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || isLoading}
               className="w-full h-11 rounded-full bg-black text-white dark:bg-white dark:text-black text-[15px] font-bold disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "Signing in..." : "Sign in"}
+              {isSubmitting || isLoading ? "Signing in..." : "Sign in"}
             </button>
           </form>
 
